@@ -1,0 +1,76 @@
+article,aside,details,figcaption,figure,
+footer,header,hgroup,main,menu,nav,section,summary {
+  display: block;
+}
+audio,canvas,progress,video {
+  display: inline-block;
+  vertical-align: baseline;
+}
+audio:not([controls]) {
+  display: none;
+  height: 0;
+}
+[hidden],template {
+  display: none;
+}
+i, em, code, u, address {
+  font-style: normal;
+  font-weight: normal;
+}
+h1, h2, h3, h4, h5, h6 {
+  padding: 0;
+  margin: 0;
+  font-size: 100%;
+  font-weight: normal;
+}
+html, body, dl, dt, dd, h1, h2, h3, h4, h5, h6, ul, ol, li, p, pre, header, section, footer, aside, nav, menu, article, figure{
+  padding: 0;
+  margin: 0;
+}
+table {border-spacing: 0;}
+td, th { padding: 0;}
+ul, ol {
+    list-style: none;
+}
+a {
+  text-decoration: none;
+  background-color: transparent;
+}
+a:focus,
+input:focus,
+button:focus {
+  outline: none;
+}
+b,strong{
+  font-weight: normal;
+}
+input,
+button,
+select,
+textarea {
+  resize: none;
+  outline: none;
+}
+input, button, select, textarea {
+    font-family: inherit;
+    font-size: inherit;
+    line-height: inherit;
+}
+input::-ms-clear {
+  display: none;
+}
+/* 去除预填充 */
+input:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0 1000px #fff inset;
+}
+
+* {
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+          box-sizing: border-box;
+}
+
+body {
+  min-width: 1250px;
+  font-family: "Microsoft YaHei", "PingFang SC", "Helvetica", "Arial", "黑体", "宋体", sans-serif;
+}
