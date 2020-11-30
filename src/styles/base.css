@@ -70,7 +70,97 @@ input:-webkit-autofill {
           box-sizing: border-box;
 }
 
-body {
+html, body {
   min-width: 1250px;
+  height: 100%;
   font-family: "Microsoft YaHei", "PingFang SC", "Helvetica", "Arial", "黑体", "宋体", sans-serif;
+}
+
+/* ---------------------------- */
+
+.dc-evaluate-wrap {
+  text-align: left;
+  margin: 0 20px;
+}
+
+.dc-evaluate-wrap ul li{
+  position: relative;
+	color: #3a4056;
+	font-size: 14px;
+	border: 1px solid #eef1f1;
+	border-radius: 5px;
+	background: #fafafa;
+}
+.dc-evaluate-wrap ul li:not(:first-child){
+	margin-top: 20px;
+}
+.dc-evaluate-wrap ul li .dc-evaluate-top{
+	height: 40px;
+	line-height: 40px;
+	border-bottom: 1px solid #eef1f1;
+	padding: 0 18px;
+}
+.dc-evaluate-top .dc-overall-evaluation a{
+	text-decoration: underline;
+	margin: 0 10px;
+}
+.dc-evaluate-top .dc-troika{
+	right: 18px;
+}
+.dc-evaluate-wrap ul li .dc-evaluate-top .dc-overall-evaluation{
+	margin-left: 24px;
+}
+/*
+    评价星定位
+    五颗星开始，横向每次-21px,以此类推
+*/
+.dc-evaluate-top .dc-overall-evaluation i{
+	display: inline-block;
+	width: 98px;
+	height: 13px;
+	background: url(../assets/start.png) no-repeat;
+	margin-right: 2px;
+	overflow: hidden;
+	-o-transform: translate(0,1px);
+    -ms-transform: translate(0,1px);
+    -moz-transform: translate(0,1px);
+    -webkit-transform: translate(0,1px);
+    transform: translate(0,1px);
+}
+.dc-evaluate-top .dc-overall-evaluation i.dc-start-5{
+	background-position: 0 0;
+}
+.dc-evaluate-top .dc-overall-evaluation i.dc-start-4{
+	background-position: -21px 0;
+}
+.dc-evaluate-top .dc-overall-evaluation i.dc-start-3{
+	background-position: -42px 0;
+}
+.dc-evaluate-top .dc-overall-evaluation i.dc-start-2{
+	background-position: -63px 0;
+}
+.dc-evaluate-top .dc-overall-evaluation i.dc-start-1{
+	background-position: -84px 0;
+}
+.dc-evaluate-top .dc-overall-evaluation i.dc-start-0{
+	background-position: -105px 0;
+}
+/*评论内容*/
+.dc-evaluate-wrap .dc-evaluate-cont{
+	line-height: 24px;
+	padding: 20px 18px;
+}
+.dc-evaluate-wrap .dc-evaluate-cont span{
+	font-size: 12px;
+	margin-left: 8px;
+}
+.dc-evaluate-wrap .dc-evaluate-cont span.dc-address{
+	font-size: 14px;
+	margin-left: 50px;
+}
+
+.dc-right{
+	position: absolute;
+	top: 0;
+	right: 0;
 }

@@ -16,7 +16,7 @@
 export default {
   name: 'app-header',
   data () {
-
+    return {}
   }
 }
 </script>
@@ -29,11 +29,19 @@ export default {
     right: 0;
     display: flex;
     justify-content: space-between;
+    font-size: 14px;
     height: 56px;
     line-height: 56px;
     background: #fff;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
     z-index: 999;
+
+    /* background-image: linear-gradient(90deg, #ff0000 25%, #41de6a 37%, #ff0000 63%);
+    width: 100%;
+    list-style: none;
+    background-size: 400% 100%;
+    background-position: 100% 50%;
+    animation: skeleton-loading 1.4s ease infinite; */
   }
 
   /* logo */
@@ -65,5 +73,14 @@ export default {
 
   .avatar-icon {
     padding-right: 5px;
+  }
+
+  @keyframes skeleton-loading {
+  0% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0 50%;
+  }
   }
 </style>
