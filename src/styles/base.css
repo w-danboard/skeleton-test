@@ -71,7 +71,6 @@ input:-webkit-autofill {
 }
 
 html, body {
-  min-width: 1250px;
   height: 100%;
   font-family: "Microsoft YaHei", "PingFang SC", "Helvetica", "Arial", "黑体", "宋体", sans-serif;
 }
@@ -147,6 +146,7 @@ html, body {
 }
 /*评论内容*/
 .dc-evaluate-wrap .dc-evaluate-cont{
+  height: 108px;
 	line-height: 24px;
 	padding: 20px 18px;
 }

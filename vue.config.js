@@ -6,20 +6,20 @@ const { SkeletonPlugin } = require('./skeleton');
 module.exports = {
   configureWebpack: {
     plugins: [
-      // new SkeletonPlugin({
-      //   // 我们要启动一个静态文件服务器，去显示dist目录里的页面
-      //   staticDir: resolve(__dirname, 'dist'),
-      //   port: 8008,
-      //   origin: 'http://localhost:8008',
-      //   device: 'iPhone 6',
-      //   defer: 5000,
-      //   button: {
-      //     color: '#efefef'
-      //   },
-      //   image: {
-      //     color: '#efefef'
-      //   }
-      // })
+      new SkeletonPlugin({
+        // 我们要启动一个静态文件服务器，去显示dist目录里的页面
+        staticDir: resolve(__dirname, 'dist'),
+        port: 8008,
+        origin: 'http://localhost:8008',
+        device: 'iPhone 6',
+        defer: 5000,
+        button: {
+          color: '#efefef'
+        },
+        image: {
+          color: '#efefef'
+        }
+      })
     ]
   },
   chainWebpack: (config) => {
