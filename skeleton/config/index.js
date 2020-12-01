@@ -8,6 +8,7 @@ const defaultOptions = {
   origin: 'http://localhost:8008',
   device: 'iPhone 6',
   defer: 5000,
+  elRoot: '#app',
   button: {
     color: '#efefef'
   },

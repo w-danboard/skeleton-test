@@ -23,7 +23,7 @@ class Skeleton {
   }
 
   async makeSkeleton (page) {
-    const { defer = 5000 } = this.options;
+    const { defer } = this.options;
     // 先读取脚本内容
     let scriptContent = await readFileSync(resolve(__dirname, 'skeletonScript.js'), 'utf8');
     // 通过addScriptTag方法向页面里注入这段脚本， 让这个脚本在pup生成的页面中注入
@@ -45,7 +45,9 @@ class Skeleton {
     }
     // 创建骨架屏
     await this.makeSkeleton(page);
-    const { html, styles } = await page.evaluate(() => Skeleton.getHtmlAndStyle());
+    const { html, styles } = await page.evaluate((options) => {
+      return Skeleton.getHtmlAndStyle(options)
+    }, this.options);
     let result = `
       <style>${styles.join('\n')}</style>
       ${html}

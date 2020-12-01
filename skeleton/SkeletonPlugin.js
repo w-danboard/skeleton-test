@@ -27,14 +27,13 @@ class SkeletonPlugin {
       const originHTML = await readFileSync(originPath, 'utf8');
       const finalHTML = originHTML.replace('<!--shell-->', skeletonHTML);
       await writeFileSync(originPath, finalHTML);
-      // await this.skeleton.destroy(); // 再销毁无头浏览器
-      // 生成骨架屏内容
-      // await this.server.close(); // 完事后要关闭服务器
+      await this.skeleton.destroy(); // 销毁无头浏览器
+      await this.server.close();     // 关闭服务
     })
   }
   async startServer () {
     this.server = new Server(this.options); // 创建服务
-    await this.server.listen(); // 启动这个服务器
+    await this.server.listen();             // 启动服务器
   }
 }
 

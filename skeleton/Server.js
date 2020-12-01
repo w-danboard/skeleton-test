@@ -8,9 +8,10 @@ class Server {
 
   async listen () {
     const app = this.app = express();
-    // 使用一个静态文件中间件 用来让客户端可以访问staticDir里的文件
+    // 使用express的静态文件中间件，供客户端可以访问staticDir里的文件
     app.use(express.static(this.options.staticDir));
-    this.httpServer = http.createServer(app); // 创建http服务器
+    
+    this.httpServer = http.createServer(app); // 创建http服务
     return new Promise(resolve => {
       this.httpServer.listen(this.options.port, () => {
         console.log(`服务器已经在${this.options.port}端口上启动了`)

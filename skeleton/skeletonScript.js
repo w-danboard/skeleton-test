@@ -3,7 +3,7 @@ window.Skeleton = (function() {
 
   const CLASS_NAME_PREFIX = 'sk-';
   const $$ = document.querySelectorAll.bind(document);
-  const REMOVE_TAGS = ['title', 'meta', 'style', 'script'];
+  const REMOVE_TAGS = ['title', 'meta', 'style', 'script', 'noscript'];
   const styleCache = new Map();
 
   // 处理按钮
@@ -89,18 +89,17 @@ window.Skeleton = (function() {
   }
 
   // 获取骨架屏的DOM元素字符串和样式style
-  function getHtmlAndStyle () {
-    console.log(document, '我是document')
+  function getHtmlAndStyle (options) {
+    const { elRoot } = options;
     const styles = Array.from($$('style')).map(style => {
       return style.innerHTML || style.innerText
     });
     // 移除['title', 'meta', 'style', 'script']标签
     Array.from($$(REMOVE_TAGS.join(','))).forEach(element => {
-      console.log(element, '====>')
       element.parentNode.removeChild(element);
     })
-    console.log(document, '我是document22222')
-    const html = document.body.innerHTML;
+    const html = document.querySelector(elRoot).innerHTML;
+    console.log(html)
     return { styles, html }
   }
 
