@@ -10,13 +10,14 @@ window.Skeleton = (function() {
   function buttonHandler (element, options = {}) {
     const className = CLASS_NAME_PREFIX + 'button'; // sk-button
     const rule = `{
+      position: relative;
       color: ${options.color} !important;
       background: ${options.color} !important;
       border: none !important;
       box-shadow: none !important;
     }`;
     addStyle(`.${className}`, rule);
-    element.classList.add(className);
+    element.classList.add(className, 'sk-loading');
   }
 
   // 处理图片
@@ -32,10 +33,11 @@ window.Skeleton = (function() {
     setAttribute(element, attrs);
     const className = CLASS_NAME_PREFIX + 'image'; // sk-image
     const rule = `{
+      position: relative;
       background: ${options.color} !important;
     }`;
     addStyle(`.${className}`, rule)
-    element.classList.add(className);
+    element.classList.add(className, 'sk-loading');
   }
 
   function setAttribute (element, attrs) {
@@ -83,6 +85,33 @@ window.Skeleton = (function() {
       // .sk-button .sk-image
       rules+=`${selector} ${rule}\n`
     }
+    
+    rules += `
+      @keyframes flush {
+        0% {
+          left: 0;
+        }
+        50% {
+          left: 50%;
+        }
+        100% {
+          left: 100%;
+        }
+      }
+      .sk-loading::after {
+        content: '';
+        animation: flush 1s linear infinite;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: 100%;
+        background: linear-gradient(to left, 
+          rgba(255, 255, 255, 0) 0%,
+          rgba(255, 255, 255, .2) 50%,
+          rgba(255, 255, 255, 0) 100%
+        )
+      }
+    `
     const styleElement = document.createElement('style');
     styleElement.innerHTML = rules;
     document.head.appendChild(styleElement);
