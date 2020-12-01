@@ -14,20 +14,18 @@ class SkeletonPlugin {
     // 当这个钩子触发的时候，会调用我们的监听函数
     // done整个编译流程都走完了，dist目录下的文件都生成了，就可以触发done的回调执行了
     compiler.hooks.done.tap(PLUGIN_NAME, async () => {
-      console.log('SkeletonPlugin Done');
       await this.startServer(); // 启动一个http服务器
       this.skeleton = new Skeleton(this.options);
       await this.skeleton.initialize(); // 启动一个无头浏览器
       // 生成骨架屏的html和style
       const skeletonHTML = await this.skeleton.genHTML(this.options.origin);
-      console.log(skeletonHTML, 'skeletonHTML===>插件log');
       const originPath = resolve(this.options.staticDir, 'index.html');
       const originHTML = await readFileSync(originPath, 'utf8');
       const finalHTML = originHTML.replace('<!--shell-->', skeletonHTML);
       await writeFileSync(originPath, finalHTML);
-      await this.skeleton.destroy(); // 再销毁无头浏览器
+      // await this.skeleton.destroy(); // 再销毁无头浏览器
       // 生成骨架屏内容
-      await this.server.close(); // 完事后要关闭服务器
+      // await this.server.close(); // 完事后要关闭服务器
     })
   }
   async startServer () {

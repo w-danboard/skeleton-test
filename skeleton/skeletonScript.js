@@ -90,12 +90,16 @@ window.Skeleton = (function() {
 
   // 获取骨架屏的DOM元素字符串和样式style
   function getHtmlAndStyle () {
+    console.log(document, '我是document')
     const styles = Array.from($$('style')).map(style => {
       return style.innerHTML || style.innerText
     });
+    // 移除['title', 'meta', 'style', 'script']标签
     Array.from($$(REMOVE_TAGS.join(','))).forEach(element => {
+      console.log(element, '====>')
       element.parentNode.removeChild(element);
     })
+    console.log(document, '我是document22222')
     const html = document.body.innerHTML;
     return { styles, html }
   }

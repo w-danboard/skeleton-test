@@ -11,12 +11,13 @@ class Skeleton {
   // 初始化
   async initialize () {
     // 打开一个浏览器
-    this.brower = await puppeteer.launch({ headless: true }); // 无头 true不打开浏览器
+    this.brower = await puppeteer.launch({ headless: false }); // 无头 true不打开浏览器
   }
 
   async newPage () {
-    let { device } = this.options; // 模仿iphone6
+    let { device } = this.options;
     let page = await this.brower.newPage();
+    // puppeteer.devices[device]: 设备模拟
     await page.emulate(puppeteer.devices[device]);
     return page;
   }
@@ -49,7 +50,6 @@ class Skeleton {
       <style>${styles.join('\n')}</style>
       ${html}
     `;
-    console.log(result, 'result ===>')
     return result;
   }
 
