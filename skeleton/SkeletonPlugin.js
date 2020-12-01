@@ -1,18 +1,22 @@
 const PLUGIN_NAME = 'SkeletonPlugin';
-const { readFileSync, writeFileSync } = require('fs-extra'); // fs的一个扩展，提供了更多便利的API，并集成了fs所有的方法和为fs添加了promise的支持
+const merge = require('lodash/merge');
+// [fs-extra] fs的一个扩展，提供了更多便利的API，并集成了fs所有的方法和为fs添加了promise的支持
+const { readFileSync, writeFileSync } = require('fs-extra');
 const { resolve } = require('path');
+const { staticDir, defaultOptions } = require('./config');
 const Server = require('./Server');
 const Skeleton = require('./Skeleton');
 
 class SkeletonPlugin {
-  constructor (options) { // staticDir port origin
-    this.options = options; // 插件传参
+  constructor (options) {
+    // 合并配置
+    this.options = merge({ staticDir }, defaultOptions, options);
   }
   // compiler代表webpack编译对象
   apply (compiler) {
-    // compiler身上会有很多的钩子，我们可以通过tap来注册这些钩子的监听
-    // 当这个钩子触发的时候，会调用我们的监听函数
-    // done整个编译流程都走完了，dist目录下的文件都生成了，就可以触发done的回调执行了
+    // compiler上有很多钩子，可以通过tap来注册这些钩子的监听
+    // 钩子触发的时候，会调用监听函数
+    // 整个编译流程都走完后，dist目录下的文件都生成了，就会触发done的回调执
     compiler.hooks.done.tap(PLUGIN_NAME, async () => {
       await this.startServer(); // 启动一个http服务器
       this.skeleton = new Skeleton(this.options);

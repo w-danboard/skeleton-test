@@ -12,7 +12,7 @@ module.exports = {
         port: 8008,
         origin: 'http://localhost:8008',
         device: 'iPhone 6',
-        defer: 5000,
+        defer: 6000,
         button: {
           color: '#efefef'
         },
