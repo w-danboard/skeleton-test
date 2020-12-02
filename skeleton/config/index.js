@@ -13,6 +13,7 @@ const defaultOptions = {
     color: '#efefef'
   },
   image: {
+    shape: 'rect',
     color: '#efefef'
   }
 }

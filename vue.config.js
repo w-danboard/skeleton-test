@@ -18,6 +18,7 @@ module.exports = {
           color: '#efefef'
         },
         image: {
+          shape: 'circle',
           color: '#efefef'
         }
       })

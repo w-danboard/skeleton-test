@@ -63,11 +63,16 @@ window.Skeleton = (function() {
       width,
       height,
       src: SMALLEST_BASE64
-    }
+    };
+    const shape = new Map([
+      ['rect', '5px'],
+      ['circle', '50%']
+    ]);
     setAttribute(element, attrs); // 为元素设置属性
     const className = CLASS_NAME_PREFIX + 'image'; // sk-image
     const rule = `{
       background: ${options.color} !important;
+      border-radius: ${shape.get(options.shape)} !important;
     }`;
     addStyle(`.${className}`, rule)
     element.classList.add(className);
