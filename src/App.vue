@@ -17,6 +17,5 @@ export default {
 <style scoped>
 #app {
   height: 100%;
-  padding-top: 76px;
 }
 </style>

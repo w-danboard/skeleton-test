@@ -104,7 +104,10 @@ html, body {
 	margin: 0 10px;
 }
 .dc-evaluate-top .dc-troika{
-	right: 18px;
+  height: 22px;
+  line-height: initial;
+  top: 10px;
+  right: 18px;
 }
 .dc-evaluate-wrap ul li .dc-evaluate-top .dc-overall-evaluation{
 	margin-left: 24px;
