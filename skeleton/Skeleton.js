@@ -39,9 +39,8 @@ class Skeleton {
     await page.addScriptTag({ content: scriptContent });
     // 等待脚本执行时间
     await sleep(defer)
-    // 脚本执行完成就要创建骨架屏的DOM结构了
+    // 脚本执行完成后创建骨架屏的DOM结构
     await page.evaluate((options) => { // page.evaluate可以使用内置的DOM选择器，比如querySelecror()
-      // 在页面中执行此函数[genSkeleton]
       Skeleton.genSkeleton(options);
     }, this.options);
   }
