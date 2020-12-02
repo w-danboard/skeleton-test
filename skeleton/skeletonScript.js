@@ -69,13 +69,50 @@ window.Skeleton = (function() {
       ['circle', '50%']
     ]);
     setAttribute(element, attrs); // 为元素设置属性
-    const className = CLASS_NAME_PREFIX + 'image'; // sk-image
+    const className = CLASS_NAME_PREFIX + 'image';
     const rule = `{
       background: ${options.color} !important;
       border-radius: ${shape.get(options.shape)} !important;
     }`;
     addStyle(`.${className}`, rule)
     element.classList.add(className);
+  }
+
+  /**
+   * 处理svg
+   * @param element svg元素
+   * @param attrs   svg配置 颜色等...
+   */
+  function svgHandler (element, options = {}) {
+    // 清空svg的innerHTML
+    emptyElement(element)
+    const className = CLASS_NAME_PREFIX + 'svg';
+    const rule = `{
+      background: ${options.color} !important;
+      border-radius: ${shape.get(options.shape)} !important;
+    }`;
+    addStyle(`.${className}`, rule)
+    element.classList.add(className);
+  }
+
+  /**
+   * 清空元素的html
+   * @param element 需要清空的元素
+   */
+  function emptyElement (element){
+    element.innerHTML = '';
+  }
+
+
+  /**
+   * 移除元素
+   * @param element 需要移除的元素
+   */
+  function romoveElement (element) {
+    const parent = element.parentNode;
+    if (parent) {
+      parent.removeChild(element)
+    }
   }
 
   /**
@@ -107,9 +144,14 @@ window.Skeleton = (function() {
   function genSkeleton (options) {
     let rootElement = document.documentElement;
     ;(function traverse(options) {
-      let { button, image } = options;
+      let { 
+        button: buttonOptions,
+        image: imageOptions ,
+        svg: svgOptions
+      } = options;
       const buttons = []; // 所有的按钮
       const images = [];  // 所有的图片
+      const svgs = [];    // 所有的svg
 
       // 遍历整个DOM元素 获取每一个元素 根据元素类型依次进行转换
       ;(function preTravers (element) {
@@ -127,16 +169,23 @@ window.Skeleton = (function() {
           case 'IMG':
             images.push(element);
             break
+          case 'SVG':
+            svgs.push(element)
+            break;
         }
       })(rootElement);
 
       // 循环遍历处理所有的button
-      buttons.forEach(item => {
-        buttonHandler(item, button);
+      buttons.forEach(ele => {
+        buttonHandler(ele, buttonOptions);
       })
-      // 循环遍历处理所有的images
-      images.forEach(item => {
-        imageHandler(item, image);
+      // 循环遍历处理所有的image
+      images.forEach(ele => {
+        imageHandler(ele, imageOptions);
+      })
+      // 循环遍历处理所有的svg
+      svgs.forEach(ele => {
+        svgHandler(ele, svgOptions);
       })
     })(options);
 
@@ -163,7 +212,7 @@ window.Skeleton = (function() {
     });
     // 移除标签
     Array.from($$(REMOVE_TAGS.join(','))).forEach(element => {
-      element.parentNode.removeChild(element);
+      romoveElement(element);
     })
     // elRoot为public下index.html文件的根元素 不知道这样做好不好 暂时先这样 [默认值#app]
     const html = document.querySelector(elRoot).innerHTML;

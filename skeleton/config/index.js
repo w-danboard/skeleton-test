@@ -15,6 +15,10 @@ const defaultOptions = {
   image: {
     shape: 'rect',
     color: '#efefef'
+  },
+  svg: {
+    shape: 'rect',
+    color: '#efefef'
   }
 }
 
