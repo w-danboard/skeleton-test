@@ -19,6 +19,9 @@ const defaultOptions = {
   svg: {
     shape: 'rect',
     color: '#efefef'
+  },
+  text: {
+    color: '#efefef'
   }
 }
 

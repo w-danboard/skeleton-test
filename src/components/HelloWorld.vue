@@ -1,7 +1,5 @@
 <template>
   <div class="hello">
-    <!-- 头部 -->
-    <app-header></app-header>
     <!-- 主体部分 -->
     <main>
       <!-- svg -->
@@ -11,7 +9,7 @@
         <ul>
           <li v-for="(item, index) in listData" :key="item.id">
             <div class="dc-relative dc-evaluate-top">
-              来自：{{item.user}}  （{{item.phone}}）
+              <span>来自：{{item.user}}  （{{item.phone}}）</span>
               <span class="dc-overall-evaluation">
                 <button>查看详情</button>
               </span>
@@ -20,7 +18,7 @@
             </div>
             <div class="dc-evaluate-cont">
               <img alt="图片示例" src="../assets/logo.png" width="60">
-              {{item.comment}}
+              <span>{{item.comment}}</span>
               <span class="dc-color-gray">{{item.date}}</span>
             </div>
           </li>

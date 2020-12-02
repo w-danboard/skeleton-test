@@ -33,6 +33,11 @@ window.Skeleton = (function() {
       )
     }
   `
+  // 圆角 or 圆形
+  const SHAPE = new Map([
+    ['rect', '5px'],
+    ['circle', '50%']
+  ]);
 
   /**
    * 处理按钮
@@ -64,15 +69,11 @@ window.Skeleton = (function() {
       height,
       src: SMALLEST_BASE64
     };
-    const shape = new Map([
-      ['rect', '5px'],
-      ['circle', '50%']
-    ]);
     setAttribute(element, attrs); // 为元素设置属性
     const className = CLASS_NAME_PREFIX + 'image';
     const rule = `{
       background: ${options.color} !important;
-      border-radius: ${shape.get(options.shape)} !important;
+      border-radius: ${SHAPE.get(options.shape)} !important;
     }`;
     addStyle(`.${className}`, rule)
     element.classList.add(className);
@@ -89,8 +90,40 @@ window.Skeleton = (function() {
     const className = CLASS_NAME_PREFIX + 'svg';
     const rule = `{
       background: ${options.color} !important;
-      border-radius: ${shape.get(options.shape)} !important;
+      border-radius: ${SHAPE.get(options.shape)} !important;
     }`;
+    addStyle(`.${className}`, rule)
+    element.classList.add(className);
+  }
+
+  /**
+   * 处理文字
+   * @param element 文字 
+   */
+  function textHandler (element, options = {}) {
+    const { width } = element.getBoundingClientRect();
+    // 文字小于等于50直接不显示
+    if (width <= 50) {
+      return setOpacity(element)
+    }
+    const className = CLASS_NAME_PREFIX + 'text';
+    const rule = `{
+      color: ${options.color} !important;
+      background: ${options.color} !important;
+    }`;
+    addStyle(`.${className}`, rule)
+    element.classList.add(className, 'sk-loading');
+  }
+
+  /**
+   * 设置透明
+   * @param {*} element 透明元素
+   */
+  function setOpacity (element) {
+    const className = CLASS_NAME_PREFIX + 'opacity';
+    const rule = `{
+      opacity: 0 !important;
+    }`
     addStyle(`.${className}`, rule)
     element.classList.add(className);
   }
@@ -147,11 +180,13 @@ window.Skeleton = (function() {
       let { 
         button: buttonOptions,
         image: imageOptions ,
-        svg: svgOptions
+        svg: svgOptions,
+        text: textOptions
       } = options;
       const buttons = []; // 所有的按钮
       const images = [];  // 所有的图片
       const svgs = [];    // 所有的svg
+      const texts = [];   // 所有的文字
 
       // 遍历整个DOM元素 获取每一个元素 根据元素类型依次进行转换
       ;(function preTravers (element) {
@@ -169,9 +204,18 @@ window.Skeleton = (function() {
           case 'IMG':
             images.push(element);
             break
-          case 'SVG':
+          case 'svg': // svg的tagName居然是小写。。。刚知道
             svgs.push(element)
             break;
+          default:
+            if (
+              element.childNodes &&
+              element.childNodes.length === 1 &&
+              element.childNodes[0].nodeType === Node.TEXT_NODE &&
+              /\S/.test(element.childNodes[0].textContent)
+            ) {
+              texts.push(element)
+            }
         }
       })(rootElement);
 
@@ -187,13 +231,16 @@ window.Skeleton = (function() {
       svgs.forEach(ele => {
         svgHandler(ele, svgOptions);
       })
+      // 循环遍历处理所有的文字
+      texts.forEach(ele => {
+        textHandler(ele, textOptions)
+      })
     })(options);
 
     // styleContent为loading动画 后面优化写法
     let rules = styleContent;
     // 循环去样式缓存中取出对应的样式
     for (const [selector, rule] of styleCache) {
-      // .sk-button .sk-image
       rules+=`${selector} ${rule}\n`
     }
     const styleElement = document.createElement('style');
