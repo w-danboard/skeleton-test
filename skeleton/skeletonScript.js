@@ -3,10 +3,42 @@ window.Skeleton = (function() {
 
   const CLASS_NAME_PREFIX = 'sk-';
   const $$ = document.querySelectorAll.bind(document);
-  const REMOVE_TAGS = ['title', 'meta', 'style', 'script', 'noscript'];
+  const REMOVE_TAGS = ['title', 'meta', 'style', 'script', 'noscript']; // 获取骨架屏DOM字符串和样式时 需删除的标签
+  const SMALLEST_BASE64 = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'; // 宽1px 高1px的透明gif图 占位使用
   const styleCache = new Map();
+  // loading样式
+  const styleContent = `
+    @keyframes flush {
+      0% {
+        left: 0;
+      }
+      50% {
+        left: 50%;
+      }
+      100% {
+        left: 100%;
+      }
+    }
+    .sk-loading::after {
+      content: '';
+      animation: flush 1s linear infinite;
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 100%;
+      background: linear-gradient(to left, 
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, .2) 50%,
+        rgba(255, 255, 255, 0) 100%
+      )
+    }
+  `
 
-  // 处理按钮
+  /**
+   * 处理按钮
+   * @param element 按钮元素 
+   * @param options 按钮配置 颜色...
+   */
   function buttonHandler (element, options = {}) {
     const className = CLASS_NAME_PREFIX + 'button'; // sk-button
     const rule = `{
@@ -20,115 +52,116 @@ window.Skeleton = (function() {
     element.classList.add(className, 'sk-loading');
   }
 
-  // 处理图片
+  /**
+   * 处理图片
+   * @param  element 图片元素
+   * @param  options 图片配置 颜色等...
+   */
   function imageHandler (element, options = {}) {
-    // 宽1px 高1px的透明gif图
-    const SMALLEST_BASE64 = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
     const { width, height } = element.getBoundingClientRect();
     const attrs = {
       width,
       height,
       src: SMALLEST_BASE64
     }
-    setAttribute(element, attrs);
+    setAttribute(element, attrs); // 为元素设置属性
     const className = CLASS_NAME_PREFIX + 'image'; // sk-image
     const rule = `{
-      position: relative;
       background: ${options.color} !important;
     }`;
     addStyle(`.${className}`, rule)
-    element.classList.add(className, 'sk-loading');
+    element.classList.add(className);
   }
 
+  /**
+   * 目前只有处理图片在使用
+   * @param element 元素
+   * @param attrs   属性和属性值 
+   */
   function setAttribute (element, attrs) {
     Object.keys(attrs).forEach(key => {
       element.setAttribute(key, attrs[key])
     })
   }
 
+  /**
+   * 向缓存存入样式 一个类型只会在缓存中出现一次
+   * @param  selector class名字
+   * @param  rule     class对应的值
+   */
   function addStyle (selector, rule) {
-    if (!styleCache.has(selector)) { // 一个类名sk-button只会在缓存中出现一次
+    if (!styleCache.has(selector)) {
       styleCache.set(selector, rule);
     }
   }
 
-  // 转换原始原始为骨架屏DOM元素
-  // 我们在此要遍历整个DOM元素树 获取每一个节点或者说元素 根据元素类型进行依次转换
+  /**
+   * 获取需要创建骨架屏的元素 设置骨架屏样式
+   * @param options 配置项 
+   */
   function genSkeleton (options) {
     let rootElement = document.documentElement;
     ;(function traverse(options) {
       let { button, image } = options;
       const buttons = []; // 所有的按钮
       const images = [];  // 所有的图片
+
+      // 遍历整个DOM元素 获取每一个元素 根据元素类型依次进行转换
       ;(function preTravers (element) {
+        // 如果此元素有子元素 则先遍历子元素 深度优先
         if (element.children && element.children.length > 0) {
-          // 如果此元素有儿子 则先遍历儿子 深度优先
           Array.from(element.children).forEach(child => {
             preTravers(child);
           })
         }
-        if (element.tagName === 'BUTTON') {
-          buttons.push(element);
-        } else if (element.tagName === 'IMG') {
-          images.push(element);
+        // 存入骨架屏元素集合
+        switch (element.tagName) {
+          case 'BUTTON':
+            buttons.push(element);
+            break;
+          case 'IMG':
+            images.push(element);
+            break
         }
       })(rootElement);
+
+      // 循环遍历处理所有的button
       buttons.forEach(item => {
         buttonHandler(item, button);
       })
+      // 循环遍历处理所有的images
       images.forEach(item => {
         imageHandler(item, image);
       })
     })(options);
-    let rules = '';
+
+    // styleContent为loading动画 后面优化写法
+    let rules = styleContent;
+    // 循环去样式缓存中取出对应的样式
     for (const [selector, rule] of styleCache) {
       // .sk-button .sk-image
       rules+=`${selector} ${rule}\n`
     }
-    
-    rules += `
-      @keyframes flush {
-        0% {
-          left: 0;
-        }
-        50% {
-          left: 50%;
-        }
-        100% {
-          left: 100%;
-        }
-      }
-      .sk-loading::after {
-        content: '';
-        animation: flush 1s linear infinite;
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        width: 100%;
-        background: linear-gradient(to left, 
-          rgba(255, 255, 255, 0) 0%,
-          rgba(255, 255, 255, .2) 50%,
-          rgba(255, 255, 255, 0) 100%
-        )
-      }
-    `
     const styleElement = document.createElement('style');
     styleElement.innerHTML = rules;
     document.head.appendChild(styleElement);
   }
 
-  // 获取骨架屏的DOM元素字符串和样式style
+  /**
+   * 获取骨架屏的DOM元素字符串和样式style
+   * @param options 插件传入的配置项
+   */
   function getHtmlAndStyle (options) {
     const { elRoot } = options;
     const styles = Array.from($$('style')).map(style => {
       return style.innerHTML || style.innerText
     });
-    // 移除['title', 'meta', 'style', 'script']标签
+    // 移除标签
     Array.from($$(REMOVE_TAGS.join(','))).forEach(element => {
       element.parentNode.removeChild(element);
     })
+    // elRoot为public下index.html文件的根元素 不知道这样做好不好 暂时先这样 [默认值#app]
     const html = document.querySelector(elRoot).innerHTML;
-    console.log(html)
     return { styles, html }
   }
 

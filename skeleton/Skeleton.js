@@ -8,12 +8,17 @@ class Skeleton {
     this.options = options;
   }
 
-  // 初始化
+  /**
+   * 初始化
+   */
   async initialize () {
     // 打开一个浏览器
-    this.brower = await puppeteer.launch({ headless: true }); // 无头 true不打开浏览器
+    this.brower = await puppeteer.launch({ headless: true });
   }
 
+  /**
+   * 打开页面
+   */
   async newPage () {
     let { device } = this.options;
     let page = await this.brower.newPage();
@@ -22,6 +27,10 @@ class Skeleton {
     return page;
   }
 
+  /**
+   * 创建骨架屏
+   * @param page 打开的页面
+   */
   async makeSkeleton (page) {
     const { defer } = this.options;
     // 先读取脚本内容
@@ -37,10 +46,15 @@ class Skeleton {
     }, this.options);
   }
 
-  async genHTML (url) { // 生成骨架屏的DOM字符串
+  /**
+   * 生成骨架屏的DOM字符串
+   * @param url 启动地址 如：http://localhost:8008
+   */
+  async genHTML (url) {
     let page = await this.newPage();
-    let response = await page.goto(url, { waitUntil: 'networkidle2' }); // 等地啊网络没有连接，也就是抓取信息全部加载出来
-    if (response && !response.ok()) { // 如果访问不成功
+    let response = await page.goto(url, { waitUntil: 'networkidle2' }); // 等待网络加载完成
+    // 如果访问不成功 比如断网了啥的
+    if (response && !response.ok()) { 
       throw new Error(`${response.status} on ${url}`);
     }
     // 创建骨架屏
@@ -55,6 +69,9 @@ class Skeleton {
     return result;
   }
 
+  /**
+   * 关闭销毁浏览器
+   */
   async destroy () {
     if (this.brower) {
       await this.brower.close();
