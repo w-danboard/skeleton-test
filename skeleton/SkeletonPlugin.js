@@ -21,14 +21,14 @@ class SkeletonPlugin {
       await this.startServer(); // 启动一个http服务器
       this.skeleton = new Skeleton(this.options);
       await this.skeleton.initialize(); // 启动一个无头浏览器
-      // 生成骨架屏的html和style
-      const skeletonHTML = await this.skeleton.genHTML(this.options.origin);
-      const originPath = resolve(this.options.staticDir, 'index.html');
-      const originHTML = await readFileSync(originPath, 'utf8');
-      const finalHTML = originHTML.replace('<!--shell-->', skeletonHTML);
-      await writeFileSync(originPath, finalHTML);
-      await this.skeleton.destroy(); // 销毁无头浏览器
-      await this.server.close();     // 关闭服务
+      
+      const skeletonHTML = await this.skeleton.genHTML(this.options.origin); // 生成骨架屏的DOM字符串
+      const originPath = resolve(this.options.staticDir, 'index.html');      // 打包后文件路径
+      const originHTML = await readFileSync(originPath, 'utf8');             // 读取打包后文件内容
+      const finalHTML = originHTML.replace('<!--shell-->', skeletonHTML);    // 把打包后的文件内容替换成生成的骨架屏内容
+      await writeFileSync(originPath, finalHTML);                            // 向打包后的文件写入替换骨架屏后的内容 
+      await this.skeleton.destroy();                                         // 销毁无头浏览器
+      await this.server.close();                                             // 关闭服务
     })
   }
   async startServer () {

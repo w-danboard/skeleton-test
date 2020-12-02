@@ -17,7 +17,7 @@ class Skeleton {
   }
 
   /**
-   * 打开页面
+   * 打开新页面
    */
   async newPage () {
     let { device } = this.options;
@@ -33,15 +33,15 @@ class Skeleton {
    */
   async makeSkeleton (page) {
     const { defer } = this.options;
-    // 先读取脚本内容
+    // 读取准备放到骨架屏中的执行脚本
     let scriptContent = await readFileSync(resolve(__dirname, 'skeletonScript.js'), 'utf8');
-    // 通过addScriptTag方法向页面里注入这段脚本， 让这个脚本在pup生成的页面中注入
+    // 通过addScriptTag方法向页面里注入这段脚本
     await page.addScriptTag({ content: scriptContent });
+    // 等待脚本执行时间
     await sleep(defer)
     // 脚本执行完成就要创建骨架屏的DOM结构了
-    // 在页面中执行此函数[genSkeleton]
-    await page.evaluate((options) => { // page.evaluate可以让我们使用内置的DOM选择器，比如querySelecror()
-      // 这个Skeleton是挂载到window上的
+    await page.evaluate((options) => { // page.evaluate可以使用内置的DOM选择器，比如querySelecror()
+      // 在页面中执行此函数[genSkeleton]
       Skeleton.genSkeleton(options);
     }, this.options);
   }

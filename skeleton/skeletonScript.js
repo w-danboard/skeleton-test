@@ -171,7 +171,7 @@ window.Skeleton = (function() {
   }
 
   /**
-   * 获取需要创建骨架屏的元素 设置骨架屏样式
+   * 对DOM进行分类，并生成骨架代码和对应的样式
    * @param options 配置项 
    */
   function genSkeleton (options) {
