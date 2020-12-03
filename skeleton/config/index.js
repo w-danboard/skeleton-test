@@ -1,6 +1,3 @@
-const { resolve } = require('path');
-
-const staticDir = resolve(__dirname, 'dist'); // 默认文件为当前项目根目录下的dist
 
 // 默认配置
 const defaultOptions = {
@@ -26,6 +23,5 @@ const defaultOptions = {
 }
 
 module.exports = {
-  staticDir,
   defaultOptions
 }

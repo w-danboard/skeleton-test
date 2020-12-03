@@ -3,14 +3,14 @@ const merge = require('lodash/merge');
 // [fs-extra] fs的一个扩展，提供了更多便利的API，并集成了fs所有的方法和为fs添加了promise的支持
 const { readFileSync, writeFileSync } = require('fs-extra');
 const { resolve } = require('path');
-const { staticDir, defaultOptions } = require('./config');
+const { defaultOptions } = require('./config');
 const Server = require('./Server');
 const Skeleton = require('./Skeleton');
 
 class SkeletonPlugin {
   constructor (options) {
     // 合并配置
-    this.options = merge({ staticDir }, defaultOptions, options);
+    this.options = merge(defaultOptions, options);
   }
   // compiler代表webpack编译对象
   apply (compiler) {
