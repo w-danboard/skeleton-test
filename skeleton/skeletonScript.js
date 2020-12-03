@@ -160,7 +160,7 @@ window.Skeleton = (function() {
   }
 
   /**
-   * 向缓存存入样式 一个类型只会在缓存中出现一次
+   * 向缓存存入样式 一个类名称只会在缓存中出现一次
    * @param  selector class名字
    * @param  rule     class对应的值
    */

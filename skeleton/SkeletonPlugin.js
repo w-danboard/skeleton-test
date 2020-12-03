@@ -12,15 +12,12 @@ class SkeletonPlugin {
     // 合并配置
     this.options = merge(defaultOptions, options);
   }
-  // compiler代表webpack编译对象
+
   apply (compiler) {
-    // compiler上有很多钩子，可以通过tap来注册这些钩子的监听
-    // 钩子触发的时候，会调用监听函数
-    // 整个编译流程都走完后，dist目录下的文件都生成了，就会触发done的回调执
     compiler.hooks.done.tap(PLUGIN_NAME, async () => {
-      await this.startServer(); // 启动一个http服务器
+      await this.startServer();
       this.skeleton = new Skeleton(this.options);
-      await this.skeleton.initialize(); // 启动一个无头浏览器
+      await this.skeleton.initialize(); // 启动无头浏览器
       
       const skeletonHTML = await this.skeleton.genHTML(this.options.origin); // 生成骨架屏的DOM字符串
       const originPath = resolve(this.options.staticDir, 'index.html');      // 打包后文件路径
@@ -32,8 +29,8 @@ class SkeletonPlugin {
     })
   }
   async startServer () {
-    this.server = new Server(this.options); // 创建服务
-    await this.server.listen();             // 启动服务器
+    this.server = new Server(this.options);
+    await this.server.listen();
   }
 }
 
