@@ -33,14 +33,11 @@ class Skeleton {
    */
   async makeSkeleton (page) {
     const { defer } = this.options;
-    // 读取准备放到骨架屏中的执行脚本
     let scriptContent = await readFileSync(resolve(__dirname, 'skeletonScript.js'), 'utf8');
-    // 通过addScriptTag方法向页面里注入这段脚本
     await page.addScriptTag({ content: scriptContent });
-    // 等待脚本执行时间
     await sleep(defer)
     // 脚本执行完成后创建骨架屏的DOM结构
-    await page.evaluate((options) => { // page.evaluate可以使用内置的DOM选择器，比如querySelecror()
+    await page.evaluate((options) => {
       Skeleton.genSkeleton(options);
     }, this.options);
   }
